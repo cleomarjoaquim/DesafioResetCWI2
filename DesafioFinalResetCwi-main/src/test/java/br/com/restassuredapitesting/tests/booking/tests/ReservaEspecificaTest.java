@@ -39,11 +39,71 @@ public class ReservaEspecificaTest extends BaseTest {
 
     public void validaReservaEspecifica(){
 
-        reservaEspecificaRequest.reservaEspecificaRequest(24)
+        reservaEspecificaRequest.reservaEspecificaRequest(39)
                 .then()
                 .log().all()
                 .statusCode(200);
 
 
     }
+    @Test
+
+    public void validaIdComBuscaReservaPorNome(){
+
+        reservaEspecificaRequest.buscaReservaPorNomeRequest("Cristiano")
+                .then()
+                .log().all()
+                .statusCode(200);
+    }
+    @Test
+    public void validaIdComBuscaDeReservaPorSobrenome(){
+
+        reservaEspecificaRequest.buscaReservaPorSobrenomeRequest("Brown")
+                .then()
+                .log().all()
+                .statusCode(200);
+    }
+
+   @Test
+    public void validaIdComBuscaDeReservaPorCheckin(){
+
+        reservaEspecificaRequest.buscaReservaPorCheckin("2021-07-10")
+                .then()
+                .log().all()
+                .statusCode(200);
+
+    }
+
+    @Test
+    public void validaIdComBuscaDeReservaPorCheckout(){
+
+        reservaEspecificaRequest.buscaReservaPorCheckout("2021-09-03")
+                .then()
+                .log().all()
+                .statusCode(200);
+
+    }
+    @Test
+    public void validaIdComBuscaDeReservaPorTresFiltros(){
+
+        reservaEspecificaRequest.buscaReservaPorTresFiltros("Eric","2021-07-10","2021-09-03")
+                .then()
+                .log().all()
+                .statusCode(200);
+
+    }
+
+    @Test
+    public void exluiReservaComSucesso(){
+        reservaEspecificaRequest.ExcluiReservaComSucesso(39)
+                .then()
+                .log().all()
+                .statusCode(200);
+
+    }
+
+
+
+
+
 }
