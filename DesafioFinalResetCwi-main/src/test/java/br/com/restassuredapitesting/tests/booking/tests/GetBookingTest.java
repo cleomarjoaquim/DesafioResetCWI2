@@ -1,6 +1,7 @@
 package br.com.restassuredapitesting.tests.booking.tests;
 
 import br.com.restassuredapitesting.base.BaseTest;
+import br.com.restassuredapitesting.runners.SmokeTests;
 import br.com.restassuredapitesting.suites.AllTests;
 import br.com.restassuredapitesting.suites.ContractTests;
 import br.com.restassuredapitesting.tests.booking.request.GetBookingRequest;
@@ -29,6 +30,7 @@ public class GetBookingTest extends BaseTest {
     public void validaListagemDeIdsDasReservas(){
         getBookingRequest.bookingReturnIds()
                        .then()
+                        .log().all()
                         .statusCode(200)
                         .body("size()", greaterThan(0));
 
@@ -43,11 +45,102 @@ public class GetBookingTest extends BaseTest {
     public void validaSchemaDaListagemDeReservas(){
         getBookingRequest.bookingReturnIds()
                 .then()
+                .log().all()
                 .statusCode(200)
                 .body(matchesJsonSchema(new File(Utils.getSchemaBasePath("booking", "bookings"))));
 
 
 
     }
+    @Test
+    @Category({AllTests.class, SmokeTests.class})
+    @DisplayName("Garantir o  retorno da reservas por ID")
+
+
+    public void validaReservaPorId(){
+
+        getBookingRequest.buscaReservaPorIDRequest(29)
+                .then()
+                .log().all()
+                .statusCode(200);
+
+
+    }
+    @Test
+    @Category({AllTests.class, SmokeTests.class})
+    @DisplayName("Garantir o  retorno da reservas por Nome")
+
+    public void validaComBuscaDeReservaPorNome(){
+
+        getBookingRequest.buscaReservaPorNomeRequest("Crisiano")
+                .then()
+                .log().all()
+                .statusCode(200);
+    }
+    @Test
+    @Category({AllTests.class, SmokeTests.class})
+    @DisplayName("Garantir o  retorno da reservas por Sobrenome")
+    public void validaComBuscaDeReservaPorSobrenome(){
+
+        getBookingRequest.buscaReservaPorSobrenomeRequest("Brown")
+                .then()
+                .log().all()
+                .statusCode(200);
+    }
+
+    @Test
+    @Category({AllTests.class, SmokeTests.class})
+    @DisplayName("Garantir o  retorno da reservas por data de checkin")
+    public void validaComBuscaDeReservaPorCheckin(){
+
+
+        getBookingRequest.buscaReservaPorCheckin("checkin","2020-10-20")
+                .then()
+                .log().all()
+                .statusCode(200);
+
+    }
+    @Test
+    @Category({AllTests.class, SmokeTests.class})
+    @DisplayName("Garantir o  retorno da reservas por data de checkout")
+
+    public void validaComBuscaDeReservaPorCheckout(){
+
+        getBookingRequest.buscaReservaPorCheckout("checkout","2021-09-03")
+                .then()
+                .log().all()
+                .statusCode(200);
+
+    }
+    @Test
+    @Category({AllTests.class, SmokeTests.class})
+    @DisplayName("Garantir o  retorno da reservas por nome, data de checkin e data de checkout")
+
+    public void validaComBuscaDeReservaPorNomeCheckinCheckout(){
+
+        getBookingRequest.buscaReservaPorTresFiltros("E","2021-07-10","2021-09-03")
+                .then()
+                .log().all()
+                .statusCode(200);
+
+    }
+    @Test
+    @Category({AllTests.class, SmokeTests.class})
+    @DisplayName("Garantir o  retorno da reservas por data de checkin")
+
+    public void validaComfiltroMalFormatado(){
+
+
+        getBookingRequest.filtroMalFormatado("")
+                .then()
+                .log().all()
+                .statusCode(200);
+
+    }
+
+
+
+
+
 
 }
