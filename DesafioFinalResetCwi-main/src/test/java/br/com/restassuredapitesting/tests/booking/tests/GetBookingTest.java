@@ -1,6 +1,7 @@
 package br.com.restassuredapitesting.tests.booking.tests;
 
 import br.com.restassuredapitesting.base.BaseTest;
+import br.com.restassuredapitesting.runners.AcceptanceTest;
 import br.com.restassuredapitesting.runners.SmokeTests;
 import br.com.restassuredapitesting.suites.AllTests;
 import br.com.restassuredapitesting.suites.ContractTests;
@@ -52,13 +53,20 @@ public class GetBookingTest extends BaseTest {
 
     }
     @Test
+    @Severity(SeverityLevel.NORMAL)
     @Category({AllTests.class, SmokeTests.class})
-    @DisplayName("Garantir o  retorno da reservas por ID")
+    @DisplayName("Valida o  retorno da reservas por ID")
 
 
     public void validaReservaPorId(){
+        int primeiroId = getBookingRequest.bookingReturnIds("","","","","","")
+                .then()
+                .statusCode(200)
+                .extract()
+                .path("[0].bookingid");
 
-        getBookingRequest.buscaReservaPorIDRequest(54)
+
+        getBookingRequest.buscaReservaPorIDRequest(primeiroId)
                 .then()
                 .log().all()
                 .statusCode(200);
@@ -66,13 +74,14 @@ public class GetBookingTest extends BaseTest {
 
     }
     @Test
+    @Severity(SeverityLevel.NORMAL)
     @Category({AllTests.class, SmokeTests.class})
-    @DisplayName("Garantir o  retorno da reservas por Nome")
+    @DisplayName("Valida o  retorno da reservas por Nome")
 
     public void validaComBuscaDeReservaPorNome(){
         String firstname = javaFaker.dragonBall().character();
         String lastname = javaFaker.funnyName().name();
-        postBookingRequest.createBookingRequest(firstname,lastname).then().statusCode(200);
+        postBookingRequest.createBookingRequest("application/json",firstname,lastname).then().statusCode(200);
 
         getBookingRequest.bookingReturnIds("firstname",firstname,"","","","")
                 .then()
@@ -81,8 +90,9 @@ public class GetBookingTest extends BaseTest {
                 .body("size()",greaterThan(0));
     }
     @Test
+    @Severity(SeverityLevel.NORMAL)
     @Category({AllTests.class, SmokeTests.class})
-    @DisplayName("Garantir o  retorno da reservas por Sobrenome")
+    @DisplayName("Valida o  retorno da reservas por Sobrenome")
     public void validaComBuscaDeReservaPorSobrenome(){
 
         getBookingRequest.bookingReturnIds("lastname","Brn","","","","")
@@ -92,8 +102,9 @@ public class GetBookingTest extends BaseTest {
     }
 
     @Test
+    @Severity(SeverityLevel.NORMAL)
     @Category({AllTests.class, SmokeTests.class})
-    @DisplayName("Garantir o  retorno da reservas por data de checkin")
+    @DisplayName("Valida o  retorno da reservas por data de checkin")
     public void validaComBuscaDeReservaPorCheckin(){
 
 
@@ -104,8 +115,9 @@ public class GetBookingTest extends BaseTest {
 
     }
     @Test
+    @Severity(SeverityLevel.NORMAL)
     @Category({AllTests.class, SmokeTests.class})
-    @DisplayName("Garantir o  retorno da reservas por data de checkout")
+    @DisplayName("Valida o  retorno da reservas por data de checkout")
 
     public void validaComBuscaDeReservaPorCheckout(){
 
@@ -116,8 +128,9 @@ public class GetBookingTest extends BaseTest {
 
     }
     @Test
+    @Severity(SeverityLevel.NORMAL)
     @Category({AllTests.class, SmokeTests.class})
-    @DisplayName("Garantir o  retorno da reservas por nome, data de checkin e data de checkout")
+    @DisplayName("Valida o  retorno da reservas por nome, data de checkin e data de checkout")
 
     public void validaComBuscaDeReservaPorNomeCheckinCheckout(){
 
@@ -128,8 +141,9 @@ public class GetBookingTest extends BaseTest {
 
     }
     @Test
-    @Category({AllTests.class, SmokeTests.class})
-    @DisplayName("Garantir o  retorno Do ERRO 500 com filtro mal formatado")
+    @Severity(SeverityLevel.BLOCKER)
+    @Category({AllTests.class, AcceptanceTest.class})
+    @DisplayName("Valida o  retorno Do ERRO 500 com filtro mal formatado")
 
     public void validaComfiltroMalFormatado(){
 

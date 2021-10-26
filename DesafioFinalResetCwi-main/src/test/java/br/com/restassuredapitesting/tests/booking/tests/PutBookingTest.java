@@ -1,6 +1,7 @@
 package br.com.restassuredapitesting.tests.booking.tests;
 
 import br.com.restassuredapitesting.base.BaseTest;
+import br.com.restassuredapitesting.runners.AcceptanceTest;
 import br.com.restassuredapitesting.runners.SmokeTests;
 import br.com.restassuredapitesting.suites.AllTests;
 import br.com.restassuredapitesting.tests.auth.request.PostAuthRequest;
@@ -24,7 +25,7 @@ public class PutBookingTest extends BaseTest {
     @Test
     @Severity(SeverityLevel.NORMAL)
     @Category({AllTests.class})
-    @DisplayName("Alterar Uma reserva somente utilizando o token")
+    @DisplayName(" Valida a alteraração de uma reserva somente utilizando o token")
 
 
     @Feature("Feature - Atualização de Reservas")
@@ -45,6 +46,9 @@ public class PutBookingTest extends BaseTest {
     }
 
     @Test
+    @Severity(SeverityLevel.NORMAL)
+    @Category({AllTests.class, SmokeTests.class})
+    @DisplayName("Valida a alteraração de uma reserva somente utilizando o Basic auth")
     public void validaAlteracaoPorBasicauth() {
 
         int primeiroId = getBookingRequest.bookingReturnIds("","","","","","")
@@ -61,47 +65,34 @@ public class PutBookingTest extends BaseTest {
 
     }
 
-    @Test
-    public void validarTentaAtualizarSemToken() {
-        int primeiroId = getBookingRequest.bookingReturnIds("","","","","","")
-                .then()
-                .statusCode(200)
-                .extract()
-                .path("[0].bookingid");
-
-        putBookingRequest.tentaAtualizarSemToken()
-                .then()
-                .log().all()
-                .statusCode(403)
-                .body("size()", greaterThan(0));
-
-    }
 
     @Test
-    @Category({AllTests.class, SmokeTests.class})
-    @DisplayName("Garantir o que não seja alterada a reserva com token invalido")
+    @Severity(SeverityLevel.BLOCKER)
+    @Category({AllTests.class, AcceptanceTest.class})
+    @DisplayName("Valida que não haja  alterada a reserva com token inválido")
     public void validarTentativaDeAlterarComTokenInvalido() {
         int primeiroId = getBookingRequest.bookingReturnIds("","","","","","")
                 .then()
                 .statusCode(200)
                 .extract()
                 .path("[0].bookingid");
-        putBookingRequest.tentaAlterarComTokenInvalido(primeiroId, "215142") //Token inválido
+        putBookingRequest.tentaAlterar(primeiroId, "215142") //Token inválido
                 .then()
                 .log().all()
                 .statusCode(403);
 
     }
     @Test
-    @Category({AllTests.class, SmokeTests.class})
-    @DisplayName("Garantir o que não seja alterada sem o envio do token")
-    public void validarTentativaDeAlterarComSemEnviarToken() {
+    @Severity(SeverityLevel.BLOCKER)
+    @Category({AllTests.class, AcceptanceTest.class})
+    @DisplayName("Valida que não haja alteração sem o envio do token")
+    public void validarTentativaDeAlterarSemEnviarToken() {
         int primeiroId = getBookingRequest.bookingReturnIds("","","","","","")
                 .then()
                 .statusCode(200)
                 .extract()
                 .path("[0].bookingid");
-        putBookingRequest.tentaAtualizarSemToken(primeiroId) //Sem Token
+        putBookingRequest.tentaAlterar(primeiroId,"") //Sem Token
                 .then()
                 .log().all()
                 .statusCode(403);

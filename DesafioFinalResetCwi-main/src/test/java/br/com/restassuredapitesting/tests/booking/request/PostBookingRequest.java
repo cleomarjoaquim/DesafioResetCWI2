@@ -13,22 +13,53 @@ public class PostBookingRequest {
     Faker javaFaker = new Faker();
     BookingPayLoads bookingPayLoads = new BookingPayLoads();
 
-
-
-
-
-        public Response createBookingRequest(String firstname, String lastName){
+        public Response createBookingRequest(String accept,String firstname, String lastName){
 
           return       given()
                 .when()
                 .header("Content-Type","application/json")
-                .header("Accept","application/json")
+                .header("Accept",accept)
                 .log().all()
                 .body(bookingPayLoads.payLoadValidBooking(firstname,lastName).toString())
                 .post("booking");
-
-
    }
+    public Response createBookingInvalidPayLoadRequest(String accept,String firstname, String lastName){
+
+        return       given()
+                .when()
+                .header("Content-Type","application/json")
+                .header("Accept",accept)
+                .log().all()
+                .body(bookingPayLoads.addPayLoadinvalidBooking(firstname,lastName).toString())
+                .post("booking");
+    }
+
+    public Response createBookingAddParametersRequest(String accept,String firstname, String lastName){
+
+        return       given()
+                .when()
+                .header("Content-Type","application/json")
+                .header("Accept",accept)
+                .log().all()
+                .body(bookingPayLoads.payLoadValidBooking(firstname,lastName).toString())
+                .post("booking");
+    }
+   /* public Response createSequenciBookingRequest(String accept,String firstname, String lastName){
+
+        return       given()
+                .when()
+                .header("Content-Type","application/json")
+                .header("Accept",accept)
+                .log().all()
+                .body(bookingPayLoads.payLoadValidBooking(firstname,lastName).toString())
+                .body(bookingPayLoads.payLoadValidBooking(firstname,lastName).toString())
+
+                .post("booking");
+*/
+    }
+
+
+
 
 
 }

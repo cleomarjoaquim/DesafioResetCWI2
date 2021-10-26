@@ -42,34 +42,12 @@ public class PutBookingRequest {
                 .body(bookingPayLoads.payLoadValidBooking("Maradona","Pele").toString())
                 .put("booking/"+id);
     }
-    @Step("Tenta alterar uma reserva sem token enviado")
-    public Response tentaAtualizarSemToken(int id,String cookie, String token) {
-        return given()
-                .header("Content-Type", "application/json")
-                .header("Accept", "application/json")
-                .header("Cookie",token)
-                .when()
-                .body(bookingPayLoads.payLoadValidBooking("Maradona","Pele").toString())
-                .put("booking/" + id);
-
-    }
-    @Step("Tenta alterar reserva com token inválido")
-    public Response tentaAlterarComTokenInvalido(int id, String token) {
+    @Step("Tenta alterar reserva")
+    public Response tentaAlterar(int id, String token) {
         return given()
                 .header("Content-Type", "application/json")
                 .header("Accept", "application/json")
                 .header("Cookie", token)
-                .when()
-                .body(bookingPayLoads.payLoadValidBooking(javaFaker.dragonBall().character(), javaFaker.dragonBall().character()).toString())
-                .put("booking/" + id);
-
-    }
-    @Step("Tenta alterar reserva sem enviar o token")
-    public Response tentaAlterarComSemEnviarToken(int id) {
-        return given()
-                .header("Content-Type", "application/json")
-                .header("Accept", "application/json")
-                //.header("Cookie", token)
                 .when()
                 .body(bookingPayLoads.payLoadValidBooking(javaFaker.dragonBall().character(), javaFaker.dragonBall().character()).toString())
                 .put("booking/" + id);

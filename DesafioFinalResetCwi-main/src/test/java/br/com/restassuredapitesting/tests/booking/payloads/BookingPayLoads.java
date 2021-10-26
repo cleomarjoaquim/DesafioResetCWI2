@@ -18,13 +18,13 @@ public class BookingPayLoads {
         return payLoad;
 
     }
-    public static JSONObject addPayLoadValidBooking(String firstname, String lastname){
+    public static JSONObject addPayLoadinvalidBooking(String firstname, String lastname){
         JSONObject payLoad = new JSONObject();
         JSONObject bookingDates = new JSONObject();
         bookingDates.put("checkin","2018-01-01");
         bookingDates.put("checkout", "2019-01-01");
         payLoad.put("firstname",firstname);
-        payLoad.put("lastname",lastname);
+        payLoad.put("lastne",lastname);
         payLoad.put("totalprice",120);
         payLoad.put("depositpaid",true);
         payLoad.put("bookingdates",bookingDates);

@@ -11,6 +11,8 @@ import br.com.restassuredapitesting.tests.booking.payloads.BookingPayLoads;
 import br.com.restassuredapitesting.tests.booking.request.GetBookingRequest;
 import br.com.restassuredapitesting.tests.booking.request.PostBookingRequest;
 import com.github.javafaker.Faker;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.junit4.DisplayName;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -23,13 +25,57 @@ public class PostBookingTest extends BaseTest {
 
 
     @Test
+    @Severity(SeverityLevel.BLOCKER)
     @Category({AllTests.class, AcceptanceTest.class})
-    @DisplayName("Garantir o  a criação de reserva")
+    @DisplayName("Valida o  a criação de reserva")
     public void validaPostBookingTest() {
         String firstname = javafaker.dragonBall().character();
         String lastname = javafaker.funnyName().name();
 
-        postBookingRequest.createBookingRequest(firstname,lastname)
+        postBookingRequest.createBookingRequest("application/json",firstname,lastname)
+                .then()
+                .log().all()
+                .statusCode(200)
+                .body("bookingid",notNullValue())
+                .body("booking.firstname",is(firstname))
+                .body("booking.lastname",is(lastname));
+    }
+
+    @Test
+    @Severity(SeverityLevel.BLOCKER)
+    @Category({AllTests.class, AcceptanceTest.class})
+    @DisplayName("Valida o retorno do ERRO 418 com accept Invalido na criação de reserva")
+    public void validaAcceptInvalidoTest() {
+        String firstname = javafaker.dragonBall().character();
+        String lastname = javafaker.funnyName().name();
+
+        postBookingRequest.createBookingRequest("applcation/json",firstname,lastname)
+                .then()
+                .log().all()
+                .statusCode(418);
+    }
+    @Test
+    @Severity(SeverityLevel.BLOCKER)
+    @Category({AllTests.class, AcceptanceTest.class})
+    @DisplayName("Valida o retorno do ERRO 500 com accept Invalido na criação de reserva")
+    public void validaCreateBookingInvalidPayLoad() {
+        String firstname = javafaker.dragonBall().character();
+        String lastname = javafaker.funnyName().name();
+
+        postBookingRequest.createBookingInvalidPayLoadRequest("application/json",firstname,lastname)
+                .then()
+                .log().all()
+                .statusCode(500);
+    }
+    /*@Test
+    @Severity(SeverityLevel.BLOCKER)
+    @Category({AllTests.class, SmokeTests.class})
+    @DisplayName("Valida o  a criação de reserva")
+    public void validacreateSequenciBookingTest() {
+        String firstname = javafaker.dragonBall().character();
+        String lastname = javafaker.funnyName().name();
+
+        postBookingRequest.createSequenciBookingRequest("application/json",firstname,lastname)
                 .then()
                 .log().all()
                 .statusCode(200)
@@ -37,9 +83,11 @@ public class PostBookingTest extends BaseTest {
                 .body("booking.firstname",is(firstname))
                 .body("booking.lastname",is(lastname));
 
-    }
+    }*/
 
 
 
-    }
+
+
+}
 
