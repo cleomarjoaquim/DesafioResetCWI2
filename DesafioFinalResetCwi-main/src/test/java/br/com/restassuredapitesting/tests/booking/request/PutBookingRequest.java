@@ -43,11 +43,11 @@ public class PutBookingRequest {
                 .put("booking/"+id);
     }
     @Step("Tenta alterar uma reserva sem token enviado")
-    public Response tentaAtualizarSemToken(int id ) {
+    public Response tentaAtualizarSemToken(int id,String cookie, String token) {
         return given()
                 .header("Content-Type", "application/json")
                 .header("Accept", "application/json")
-                //.header("Cookie")
+                .header("Cookie",token)
                 .when()
                 .body(bookingPayLoads.payLoadValidBooking("Maradona","Pele").toString())
                 .put("booking/" + id);

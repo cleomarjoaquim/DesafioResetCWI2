@@ -29,6 +29,18 @@ public class DeleteBookingRequest {
 
 
     }
+    @Step("Exlui Reserva")
+    public Response excluiReservaQueNaoExiste(int id, String token){
+
+
+        return given()
+                .header("Content-Type","application/json")
+                .header("Cookie",token)
+                .when()
+                .log().all()
+                .delete("booking/"+id);
+    }
+
 
 
 }

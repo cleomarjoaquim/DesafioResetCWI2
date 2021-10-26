@@ -17,16 +17,15 @@ public class PostBookingRequest {
 
 
 
-        public Response createBookingRequest(int id/*, String token*/){
+        public Response createBookingRequest(String firstname, String lastName){
 
           return       given()
                 .when()
                 .header("Content-Type","application/json")
                 .header("Accept","application/json")
-                //.header("Cookie", token)
                 .log().all()
-                .body(bookingPayLoads.payLoadValidBooking(javaFaker.dragonBall().character(),javaFaker.dragonBall().character()).toString())
-                .post("booking/"+id);
+                .body(bookingPayLoads.payLoadValidBooking(firstname,lastName).toString())
+                .post("booking");
 
 
    }

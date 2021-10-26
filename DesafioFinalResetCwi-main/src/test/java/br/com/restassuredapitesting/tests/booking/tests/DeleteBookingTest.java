@@ -19,7 +19,7 @@ public class DeleteBookingTest extends BaseTest {
     @Category({AllTests.class, SmokeTests.class})
     @DisplayName("Garantir a exclusao de reserva com token valido")
     public void validarExlusaoDeReservaComTokenValido() {
-        int primeiroId = getBookingRequest.bookingReturnIds()
+        int primeiroId = getBookingRequest.bookingReturnIds("","","","","","")
                 .then()
                 .statusCode(200)
                 .extract()
@@ -35,7 +35,7 @@ public class DeleteBookingTest extends BaseTest {
     @Category({AllTests.class, SmokeTests.class})
     @DisplayName("Garantir a não exclusão, caso não tenha a autorização")
     public void validarExlusaoSemAutorização() {
-        int primeiroId = getBookingRequest.bookingReturnIds()
+        int primeiroId = getBookingRequest.bookingReturnIds("","","","","","")
                 .then()
                 .statusCode(200)
                 .extract()
@@ -48,4 +48,20 @@ public class DeleteBookingTest extends BaseTest {
 
 
     }
+    @Test
+    @Category({AllTests.class, SmokeTests.class})
+    @DisplayName("Garantir a tentativa de exclusao de reserva que não existe")
+    public void validaexcluiReservaQueNaoExiste() {
+       /* int primeiroId = getBookingRequest.bookingReturnIds()
+                .then()
+                .statusCode(200)
+                .extract()
+                .path("[0].bookingid");*/
+
+        deleteBookingRequest.excluiReservaQueNaoExiste(516, postAuthRequest.getToken())
+                .then()
+                .log().all()
+                .statusCode(405);
+    }
+
 }

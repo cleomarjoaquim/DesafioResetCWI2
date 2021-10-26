@@ -10,6 +10,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.junit4.DisplayName;
+import io.restassured.http.Cookie;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -29,7 +30,7 @@ public class PutBookingTest extends BaseTest {
     @Feature("Feature - Atualização de Reservas")
 
     public void validarAlteracaoDeUmaReservaUtilizandoToken() {
-        int primeiroId = getBookingRequest.bookingReturnIds()
+        int primeiroId = getBookingRequest.bookingReturnIds("","","","","","")
                 .then()
                 .statusCode(200)
                 .extract()
@@ -46,7 +47,7 @@ public class PutBookingTest extends BaseTest {
     @Test
     public void validaAlteracaoPorBasicauth() {
 
-        int primeiroId = getBookingRequest.bookingReturnIds()
+        int primeiroId = getBookingRequest.bookingReturnIds("","","","","","")
                 .then()
                 .statusCode(200)
                 .extract()
@@ -62,13 +63,13 @@ public class PutBookingTest extends BaseTest {
 
     @Test
     public void validarTentaAtualizarSemToken() {
-        int primeiroId = getBookingRequest.bookingReturnIds()
+        int primeiroId = getBookingRequest.bookingReturnIds("","","","","","")
                 .then()
                 .statusCode(200)
                 .extract()
                 .path("[0].bookingid");
 
-        putBookingRequest.tentaAtualizarSemToken(primeiroId)
+        putBookingRequest.tentaAtualizarSemToken()
                 .then()
                 .log().all()
                 .statusCode(403)
@@ -80,7 +81,7 @@ public class PutBookingTest extends BaseTest {
     @Category({AllTests.class, SmokeTests.class})
     @DisplayName("Garantir o que não seja alterada a reserva com token invalido")
     public void validarTentativaDeAlterarComTokenInvalido() {
-        int primeiroId = getBookingRequest.bookingReturnIds()
+        int primeiroId = getBookingRequest.bookingReturnIds("","","","","","")
                 .then()
                 .statusCode(200)
                 .extract()
@@ -95,12 +96,12 @@ public class PutBookingTest extends BaseTest {
     @Category({AllTests.class, SmokeTests.class})
     @DisplayName("Garantir o que não seja alterada sem o envio do token")
     public void validarTentativaDeAlterarComSemEnviarToken() {
-        int primeiroId = getBookingRequest.bookingReturnIds()
+        int primeiroId = getBookingRequest.bookingReturnIds("","","","","","")
                 .then()
                 .statusCode(200)
                 .extract()
                 .path("[0].bookingid");
-        putBookingRequest.tentaAlterarComSemEnviarToken(primeiroId) //Sem Token
+        putBookingRequest.tentaAtualizarSemToken(primeiroId) //Sem Token
                 .then()
                 .log().all()
                 .statusCode(403);

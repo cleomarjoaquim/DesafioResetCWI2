@@ -5,6 +5,7 @@ import br.com.restassuredapitesting.runners.SmokeTests;
 import br.com.restassuredapitesting.suites.AllTests;
 import br.com.restassuredapitesting.suites.ContractTests;
 import br.com.restassuredapitesting.tests.booking.request.GetBookingRequest;
+import br.com.restassuredapitesting.tests.booking.request.PostBookingRequest;
 import br.com.restassuredapitesting.utils.Utils;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
@@ -12,15 +13,13 @@ import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.junit4.DisplayName;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-
 import java.io.File;
-
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchema;
 import static org.hamcrest.Matchers.greaterThan;
+
 @Feature("Feature- Retorno de reservas")
-
-
 public class GetBookingTest extends BaseTest {
+    PostBookingRequest postBookingRequest= new PostBookingRequest();
 
     GetBookingRequest getBookingRequest = new GetBookingRequest();
     @Test
@@ -28,7 +27,7 @@ public class GetBookingTest extends BaseTest {
     @Category({AllTests.class})
     @DisplayName("Listar IDs reservas")
     public void validaListagemDeIdsDasReservas(){
-        getBookingRequest.bookingReturnIds()
+        getBookingRequest.bookingReturnIds("","","","","","")
                        .then()
                         .log().all()
                         .statusCode(200)
@@ -43,7 +42,7 @@ public class GetBookingTest extends BaseTest {
     @DisplayName("Garantir o schema do retorno da listagem de reservas")
 
     public void validaSchemaDaListagemDeReservas(){
-        getBookingRequest.bookingReturnIds()
+        getBookingRequest.bookingReturnIds("","","","","","")
                 .then()
                 .log().all()
                 .statusCode(200)
@@ -59,7 +58,7 @@ public class GetBookingTest extends BaseTest {
 
     public void validaReservaPorId(){
 
-        getBookingRequest.buscaReservaPorIDRequest(29)
+        getBookingRequest.buscaReservaPorIDRequest(54)
                 .then()
                 .log().all()
                 .statusCode(200);
@@ -71,18 +70,22 @@ public class GetBookingTest extends BaseTest {
     @DisplayName("Garantir o  retorno da reservas por Nome")
 
     public void validaComBuscaDeReservaPorNome(){
+        String firstname = javaFaker.dragonBall().character();
+        String lastname = javaFaker.funnyName().name();
+        postBookingRequest.createBookingRequest(firstname,lastname).then().statusCode(200);
 
-        getBookingRequest.buscaReservaPorNomeRequest("Crisiano")
+        getBookingRequest.bookingReturnIds("firstname",firstname,"","","","")
                 .then()
                 .log().all()
-                .statusCode(200);
+                .statusCode(200)
+                .body("size()",greaterThan(0));
     }
     @Test
     @Category({AllTests.class, SmokeTests.class})
     @DisplayName("Garantir o  retorno da reservas por Sobrenome")
     public void validaComBuscaDeReservaPorSobrenome(){
 
-        getBookingRequest.buscaReservaPorSobrenomeRequest("Brown")
+        getBookingRequest.bookingReturnIds("lastname","Brn","","","","")
                 .then()
                 .log().all()
                 .statusCode(200);
@@ -94,7 +97,7 @@ public class GetBookingTest extends BaseTest {
     public void validaComBuscaDeReservaPorCheckin(){
 
 
-        getBookingRequest.buscaReservaPorCheckin("checkin","2020-10-20")
+        getBookingRequest.bookingReturnIds("checkin","2020-10-20","","","","")
                 .then()
                 .log().all()
                 .statusCode(200);
@@ -106,7 +109,7 @@ public class GetBookingTest extends BaseTest {
 
     public void validaComBuscaDeReservaPorCheckout(){
 
-        getBookingRequest.buscaReservaPorCheckout("checkout","2021-09-03")
+        getBookingRequest.bookingReturnIds("checkout","2021-09-03","","","","")
                 .then()
                 .log().all()
                 .statusCode(200);
@@ -118,7 +121,7 @@ public class GetBookingTest extends BaseTest {
 
     public void validaComBuscaDeReservaPorNomeCheckinCheckout(){
 
-        getBookingRequest.buscaReservaPorTresFiltros("E","2021-07-10","2021-09-03")
+        getBookingRequest.bookingReturnIds("paulo","","checkin","2021-07-10","checkout","2021-07-10")
                 .then()
                 .log().all()
                 .statusCode(200);
@@ -126,15 +129,15 @@ public class GetBookingTest extends BaseTest {
     }
     @Test
     @Category({AllTests.class, SmokeTests.class})
-    @DisplayName("Garantir o  retorno da reservas por data de checkin")
+    @DisplayName("Garantir o  retorno Do ERRO 500 com filtro mal formatado")
 
     public void validaComfiltroMalFormatado(){
 
 
-        getBookingRequest.filtroMalFormatado("")
+        getBookingRequest.bookingReturnIds("firstname","Pele","lastname","paulo","checkout","25/10/2021")
                 .then()
                 .log().all()
-                .statusCode(200);
+                .statusCode(500);
 
     }
 
