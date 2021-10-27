@@ -26,10 +26,7 @@ public class PutBookingRequest {
                 .when()
                 .body(bookingPayLoads.payLoadValidBooking(javaFaker.dragonBall().character(), javaFaker.dragonBall().character()).toString())
                 .put("booking/" + id);
-
     }
-
-
     @Step("Atualiza uma reserva específica com Basic auth")
 
     public Response atualizaReservaBasicauth(int id, String token) {
@@ -42,6 +39,7 @@ public class PutBookingRequest {
                 .body(bookingPayLoads.payLoadValidBooking("Maradona","Pele").toString())
                 .put("booking/"+id);
     }
+
     @Step("Tenta alterar reserva")
     public Response tentaAlterar(int id, String token) {
         return given()
@@ -51,11 +49,5 @@ public class PutBookingRequest {
                 .when()
                 .body(bookingPayLoads.payLoadValidBooking(javaFaker.dragonBall().character(), javaFaker.dragonBall().character()).toString())
                 .put("booking/" + id);
-
     }
-
-
-
-
 }
-

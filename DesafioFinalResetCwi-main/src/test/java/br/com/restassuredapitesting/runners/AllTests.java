@@ -19,7 +19,6 @@ import org.junit.runners.Suite;
         PutBookingTest.class,
         DeleteBookingTest.class,
         PostBookingTest.class,
-
 })
 
 public class AllTests {

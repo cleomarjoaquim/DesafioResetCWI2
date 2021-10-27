@@ -13,6 +13,7 @@ public class PostBookingRequest {
     Faker javaFaker = new Faker();
     BookingPayLoads bookingPayLoads = new BookingPayLoads();
 
+    @Step("Cria nova reserva")
         public Response createBookingRequest(String accept,String firstname, String lastName){
 
           return       given()
@@ -23,6 +24,8 @@ public class PostBookingRequest {
                 .body(bookingPayLoads.payLoadValidBooking(firstname,lastName).toString())
                 .post("booking");
    }
+
+   @Step("Tenta Criar reserva com payload invalido")
     public Response createBookingInvalidPayLoadRequest(String accept,String firstname, String lastName){
 
         return       given()
@@ -33,33 +36,4 @@ public class PostBookingRequest {
                 .body(bookingPayLoads.addPayLoadinvalidBooking(firstname,lastName).toString())
                 .post("booking");
     }
-
-    public Response createBookingAddParametersRequest(String accept,String firstname, String lastName){
-
-        return       given()
-                .when()
-                .header("Content-Type","application/json")
-                .header("Accept",accept)
-                .log().all()
-                .body(bookingPayLoads.payLoadValidBooking(firstname,lastName).toString())
-                .post("booking");
-    }
-   /* public Response createSequenciBookingRequest(String accept,String firstname, String lastName){
-
-        return       given()
-                .when()
-                .header("Content-Type","application/json")
-                .header("Accept",accept)
-                .log().all()
-                .body(bookingPayLoads.payLoadValidBooking(firstname,lastName).toString())
-                .body(bookingPayLoads.payLoadValidBooking(firstname,lastName).toString())
-
-                .post("booking");
-*/
-    }
-
-
-
-
-
-}
+ }

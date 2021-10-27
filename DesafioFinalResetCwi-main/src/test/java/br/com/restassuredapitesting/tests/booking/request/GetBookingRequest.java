@@ -1,5 +1,4 @@
 package br.com.restassuredapitesting.tests.booking.request;
-
 import br.com.restassuredapitesting.base.BaseTest;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
@@ -7,9 +6,7 @@ import io.restassured.response.Response;
 import javax.xml.soap.SAAJResult;
 
 import static io.restassured.RestAssured.given;
-
 public class GetBookingRequest {
-
 
     @Step("Retorna os IDs conforme o filtro")
     public Response bookingReturnIds(String filtro1, String valorFiltro1, String filtro2, String valorFiltro2,String filtro3, String valorFiltro3){

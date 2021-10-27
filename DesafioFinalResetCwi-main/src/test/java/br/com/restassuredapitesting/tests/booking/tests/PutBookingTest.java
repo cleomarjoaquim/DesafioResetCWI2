@@ -1,9 +1,9 @@
 package br.com.restassuredapitesting.tests.booking.tests;
 
 import br.com.restassuredapitesting.base.BaseTest;
-import br.com.restassuredapitesting.runners.AcceptanceTest;
-import br.com.restassuredapitesting.runners.SmokeTests;
+import br.com.restassuredapitesting.suites.AcceptanceTests;
 import br.com.restassuredapitesting.suites.AllTests;
+import br.com.restassuredapitesting.suites.SmokeTests;
 import br.com.restassuredapitesting.tests.auth.request.PostAuthRequest;
 import br.com.restassuredapitesting.tests.booking.request.GetBookingRequest;
 import br.com.restassuredapitesting.tests.booking.request.PutBookingRequest;
@@ -11,7 +11,6 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.http.Cookie;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -22,13 +21,11 @@ public class PutBookingTest extends BaseTest {
     GetBookingRequest getBookingRequest = new GetBookingRequest();
     PostAuthRequest postAuthRequest = new PostAuthRequest();
 
+    @Feature("Feature - Atualização de Reservas")
     @Test
     @Severity(SeverityLevel.NORMAL)
-    @Category({AllTests.class})
+    @Category({AllTests.class, br.com.restassuredapitesting.suites.SmokeTests.class})
     @DisplayName(" Valida a alteraração de uma reserva somente utilizando o token")
-
-
-    @Feature("Feature - Atualização de Reservas")
 
     public void validarAlteracaoDeUmaReservaUtilizandoToken() {
         int primeiroId = getBookingRequest.bookingReturnIds("","","","","","")
@@ -42,7 +39,6 @@ public class PutBookingTest extends BaseTest {
                 .log().all()
                 .statusCode(200)
                 .body("size()", greaterThan(0));
-
     }
 
     @Test
@@ -62,14 +58,13 @@ public class PutBookingTest extends BaseTest {
                 .then()
                 .log().all()
                 .statusCode(200);
-
     }
-
 
     @Test
     @Severity(SeverityLevel.BLOCKER)
-    @Category({AllTests.class, AcceptanceTest.class})
+    @Category({AllTests.class, br.com.restassuredapitesting.suites.AcceptanceTests.class})
     @DisplayName("Valida que não haja  alterada a reserva com token inválido")
+
     public void validarTentativaDeAlterarComTokenInvalido() {
         int primeiroId = getBookingRequest.bookingReturnIds("","","","","","")
                 .then()
@@ -80,11 +75,11 @@ public class PutBookingTest extends BaseTest {
                 .then()
                 .log().all()
                 .statusCode(403);
-
     }
+
     @Test
     @Severity(SeverityLevel.BLOCKER)
-    @Category({AllTests.class, AcceptanceTest.class})
+    @Category({AllTests.class, AcceptanceTests.class})
     @DisplayName("Valida que não haja alteração sem o envio do token")
     public void validarTentativaDeAlterarSemEnviarToken() {
         int primeiroId = getBookingRequest.bookingReturnIds("","","","","","")
@@ -96,7 +91,5 @@ public class PutBookingTest extends BaseTest {
                 .then()
                 .log().all()
                 .statusCode(403);
-
     }
-
 }

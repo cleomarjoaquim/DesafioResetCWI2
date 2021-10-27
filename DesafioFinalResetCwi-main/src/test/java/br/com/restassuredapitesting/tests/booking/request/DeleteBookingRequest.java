@@ -9,8 +9,6 @@ public class DeleteBookingRequest {
 
     @Step("Exlui Reserva")
     public Response excluiReserva(int id, String token){
-
-
         return given()
                 .header("Content-Type","application/json")
                 .header("Cookie",token)
@@ -18,6 +16,7 @@ public class DeleteBookingRequest {
                 .log().all()
                 .delete("booking/"+id);
     }
+
     @Step("Tentar excluir reserva sem autorização")
     public Response tentaExcluir(int id, String token){
         return given()
@@ -26,10 +25,5 @@ public class DeleteBookingRequest {
                 .when()
                 .log().all()
                 .delete("booking/"+id);
-
-
     }
-
-
-
 }
