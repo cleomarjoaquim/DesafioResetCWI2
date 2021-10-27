@@ -15,13 +15,14 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import static org.hamcrest.number.OrderingComparison.greaterThan;
+@Feature("Feature - Atualização de Reservas")
+
 
 public class PutBookingTest extends BaseTest {
     PutBookingRequest putBookingRequest = new PutBookingRequest();
     GetBookingRequest getBookingRequest = new GetBookingRequest();
     PostAuthRequest postAuthRequest = new PostAuthRequest();
 
-    @Feature("Feature - Atualização de Reservas")
     @Test
     @Severity(SeverityLevel.NORMAL)
     @Category({AllTests.class, br.com.restassuredapitesting.suites.SmokeTests.class})
@@ -63,7 +64,7 @@ public class PutBookingTest extends BaseTest {
     @Test
     @Severity(SeverityLevel.BLOCKER)
     @Category({AllTests.class, br.com.restassuredapitesting.suites.AcceptanceTests.class})
-    @DisplayName("Valida que não haja  alterada a reserva com token inválido")
+    @DisplayName("Valida que não haja  alteraração da reserva com token inválido")
 
     public void validarTentativaDeAlterarComTokenInvalido() {
         int primeiroId = getBookingRequest.bookingReturnIds("","","","","","")
@@ -91,5 +92,17 @@ public class PutBookingTest extends BaseTest {
                 .then()
                 .log().all()
                 .statusCode(403);
+    }
+    @Test
+    @Severity(SeverityLevel.NORMAL)
+    @Category({AllTests.class, AcceptanceTests.class})
+    @DisplayName("Tenta alterar reserva que não existe")
+
+    public void ValidaTentativaDeAlterarcaoDeReservaQueNaoExiste() {
+
+        putBookingRequest.alterarReservaQueNaoExiste(5050505, postAuthRequest.getToken())
+                .then()
+                .log().all()
+                .statusCode(405);
     }
 }

@@ -1,0 +1,6 @@
+Observações do projeto do Desafio API
+
+- OS filtros de Nome, sobrenome, Checkin e checkout estão passando mesmo com os filtros escritos de forma errada.
+- Na exlusão de reserva esá retornando Status code 201, de acordo com as boas práticas deveria ser 200
+- Na tentativa de exlusão e alteração de reserva inexistente eu não consegui fazer com que o método selecionasse um Id de forma dinâmica,
+então eu inseri um valor alto no campo Id, sabendo que não é seguro, mas foi a maneira que achei de validar o teste momentaneamente.

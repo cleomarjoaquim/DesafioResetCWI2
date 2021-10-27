@@ -50,4 +50,14 @@ public class PutBookingRequest {
                 .body(bookingPayLoads.payLoadValidBooking(javaFaker.dragonBall().character(), javaFaker.dragonBall().character()).toString())
                 .put("booking/" + id);
     }
+    @Step("Tenta Atualizar uma reserva qu não existe")
+    public Response alterarReservaQueNaoExiste(int id, String token) {
+        return given()
+                .header("Content-Type", "application/json")
+                .header("Accept", "application/json")
+                .header("Cookie", token)
+                .when()
+                .body(bookingPayLoads.payLoadValidBooking(javaFaker.dragonBall().character(), javaFaker.dragonBall().character()).toString())
+                .put("booking/" + id);
+    }
 }
